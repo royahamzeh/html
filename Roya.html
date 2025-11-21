@@ -1,6 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h1>Hello from Roya!</h1>
-  </body>
+<head>
+    <title>Trigger Lambda</title>
+</head>
+
+<body>
+    <h1>Send Data to AWS Lambda</h1>
+
+    <button id="sendButton">Send Delivery Data</button>
+
+    <p id="responseBox"></p>
+
+    <script>
+        document.getElementById("sendButton").addEventListener("click", function() {
+
+            // 1. داده‌ای که می‌خواهی تولید کنی
+            const payload = {
+                name: "Roya",
+                packageId: "PKG-" + Math.floor(Math.random() * 10000),
+                address: "Berlin"
+            };
+
+            // 2. آدرس API Gateway خودت را اینجا قرار بده:
+            const apiUrl = "https://yh27iafijg.execute-api.eu-west-1.amazonaws.com/default/RoyaFunction";
+
+            // 3. ارسال داده به Lambda از طریق API
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("responseBox").innerText = 
+                    "Response from Lambda: " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("responseBox").innerText = 
+                    "Error: " + error;
+            });
+        });
+    </script>
+</body>
 </html>
