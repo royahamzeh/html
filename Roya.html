@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trigger Lambda</title>
+    <title>Send Order</title>
 </head>
 
 <body>
-    <h1>Send Data to AWS Lambda</h1>
+    <h1>Submit Your Order</h1>
 
-    <button id="sendButton">Send Delivery Data</button>
+    <label>Name:</label>
+    <input id="nameInput" type="text"> <br><br>
+
+    <label>Package ID:</label>
+    <input id="packageInput" type="text"> <br><br>
+
+    <label>Address:</label>
+    <input id="addressInput" type="text"> <br><br>
+
+    <button id="sendButton">Submit Order</button>
 
     <p id="responseBox"></p>
 
     <script>
         document.getElementById("sendButton").addEventListener("click", function() {
 
-            // 1. داده‌ای که می‌خواهی تولید کنی
             const payload = {
-                name: "Roya",
-                packageId: "PKG-" + Math.floor(Math.random() * 10000),
-                address: "Berlin"
+                name: document.getElementById("nameInput").value,
+                packageId: document.getElementById("packageInput").value,
+                address: document.getElementById("addressInput").value
             };
 
-            // 2. آدرس API Gateway خودت را اینجا قرار بده:
             const apiUrl = "https://v9y7wohmqk.execute-api.eu-west-1.amazonaws.com/default/RoyaFunction";
 
-            // 3. ارسال داده به Lambda از طریق API
             fetch(apiUrl, {
                 method: "POST",
                 headers: {
