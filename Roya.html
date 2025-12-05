@@ -29,7 +29,8 @@
                 address: document.getElementById("addressInput").value
             };
 
-            const apiUrl = "https://v9y7wohmqk.execute-api.eu-west-1.amazonaws.com/default/RoyaFunction";
+            // ✅ مسیر درست فانکشن
+            const apiUrl = "https://v9y7wohmqk.execute-api.eu-west-1.amazonaws.com/default/RoyaFunction-savingorder";
 
             fetch(apiUrl, {
                 method: "POST",
@@ -38,13 +39,22 @@
                 },
                 body: JSON.stringify(payload)
             })
-            .then(response => response.json())
+            .then(response => {
+                // اگر پاسخ JSON بود
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {
+                        throw new Error("HTTP " + response.status + ": " + text);
+                    });
+                }
+            })
             .then(data => {
-                document.getElementById("responseBox").innerText = 
+                document.getElementById("responseBox").innerText =
                     "Response from Lambda: " + JSON.stringify(data);
             })
             .catch(error => {
-                document.getElementById("responseBox").innerText = 
+                document.getElementById("responseBox").innerText =
                     "Error: " + error;
             });
         });
